@@ -2,7 +2,9 @@
 [![Build Status](https://travis-ci.org/IgniteUI/typedoc-plugin-localization.svg?branch=master)](https://travis-ci.org/IgniteUI/typedoc-plugin-localization)
 [![npm version](https://badge.fury.io/js/typedoc-plugin-localization.svg)](https://badge.fury.io/js/typedoc-plugin-localization)
 
-## Inspired and used by [Ignite UI for Angular](https://github.com/IgniteUI/igniteui-angular)
+<div align="center">
+ <p>Inspired and used by [Ignite UI for Angular](https://github.com/IgniteUI/igniteui-angular)</p>
+</div>
 
 ### Plugin
 
@@ -11,24 +13,23 @@ A plugin for [Typedoc](http://typedoc.org)
 When using [Typedoc](http://typedoc.org) for API docs generation you may want to generate documentation with different languages.
 
 By using this plugin you will be able to:
- 1. Merge all code comments(classes, methods, properties, enumerations etc.) that needs localization in a couple of json files.
+ 1. Merge all code comments (classes, methods, properties, enumerations etc.) that need localization into individual JSON files.
  2. Translate them.
  3. Use the updated files to build a documentation for an entire project in the desired language.
 
 ### Installing
 
-```
-npm install typedoc-plugin-localization --save-dev
+```bash
+$ npm install typedoc-plugin-localization --save-dev
 ```
 
 ### Usage
 
 #### Important notes
 > Please take in mind that you are running your local npm packages by `npx` right before the command execution.
-> <br />
+>
 > The alternative would be to install the plugin globally with `-g` at the end of the command.
-> <br />
-> Then you won't need to use `npx`.
+> This would allow you to elide usage of `npx` when referencing the command.
 
 > The plugin works with [typedoc](https://github.com/TypeStrong/typedoc) version@0.13.0 and above.
 
@@ -48,30 +49,28 @@ npm install typedoc-plugin-localization --save-dev
 
 
 #### Path variable descriptions
-`<main-proj-dir>` - This file has to contain the file structure of the project.
-    <br />
-`<json-exports-dir>` - This file would contains all generated json files with retrieved comments.
-    <br />
-`<out-typedoc-dir>` - The directory where the documentation have to be generated
+  1. `$main_project_directory` - This file has to contain the file structure of the project.
+  2. `$json_exports_directory` - This file would contains all generated json files with retrieved comments.
+  3. `$target_directory` - The directory where the documentation have to be generated
 
 #### Step 1
 In order to generate the json representation of each module of your application you will have to execute the command below: 
-```
-npx typedoc `<main-proj-dir>` --generate-json `<json-export-dir>`
+```bash
+$ npx typedoc $main_project_directory --generate-json $json_exports_directory --out $target_directory
 ```
 
 We can use [Ignite UI for Angular](https://github.com/IgniteUI/igniteui-angular) repository for Example:
 
-```
-npx typedoc projects\igniteui-angular\src\ --generate-json exports
+```bash
+$ npx typedoc projects\igniteui-angular\src\ --generate-json exports
 ```
 
 Folder `exports` will be automatically created
 
-> This command will create `exports` folder.
-> <br />
+> This command will create a folder named `exports`.
+>
 >`projects\igniteui-angular\src\` This directory contains the file structure of the project.
-> <br />
+>
 > For instance when you have a `/directory/inner-dir1/inner-dir2/file.ts` it will create the following structure `exports/directory/inner-dir1/inner-dir2/` which will contains all files that are under it.
 
 
@@ -79,7 +78,7 @@ Folder `exports` will be automatically created
 
 After the export of the JSON files finished, you should modify the comments in the desired language.
 
-```JSON
+```JSONC
 {
     "IgxGridComponent": {
         "comment": {
@@ -113,7 +112,7 @@ After the export of the JSON files finished, you should modify the comments in t
                     ]
                 }
             },
-        ....
+        // ...
         },
         "methods": {
             "findNext": {
@@ -152,9 +151,9 @@ After the export of the JSON files finished, you should modify the comments in t
                     ]
                 }
             }
-        ....
+        // ...
         }
-    ....
+    // ...
 ```
 
 The structure of every file has the following representation:
@@ -177,13 +176,13 @@ The structure of every file has the following representation:
 When you finish with the translations you will have to generate the documentation with the transleted files `(json's)`.
 <br />
 So the following command have to be executed:
-```
-npx typedoc `<main-proj-dir>` --generate-from-json `<json-exports-dir>` --out `<out-typedoc-dir>`
+```bash
+$ npx typedoc `<main-proj-dir>` --generate-from-json `<json-exports-dir>` --out `<out-typedoc-dir>`
 ```
 
 Example:
-```
-npx typedoc .\projects\igniteui-angular\src\ --generate-from-json .\exports\ --out localized
+```bash
+$ npx typedoc .\projects\igniteui-angular\src\ --generate-from-json .\exports\ --out localized
 ```
 
 Folder `localized` will be automatically created.
@@ -196,15 +195,15 @@ We have registered a helper function within our plugin which brings you the abil
 Let's take an example of a `partial view`.
 
 ```html
-        <ul>
-            {{#each sources}}
-                {{#if url}}
-                    <li><span>Defined in</span> <a href="{{url}}">{{fileName}}:{{line}}</a></li>
-                {{else}}
-                    <li><span>Defined in</span> {{fileName}}:{{line}}</li>
-                {{/if}}
-            {{/each}}
-        </ul>
+<ul>
+    {{#each sources}}
+        {{#if url}}
+            <li><span>Defined in</span> <a href="{{url}}">{{fileName}}:{{line}}</a></li>
+        {{else}}
+            <li><span>Defined in</span> {{fileName}}:{{line}}</li>
+        {{/if}}
+    {{/each}}
+</ul>
 ```
 Here we would like to translate "Defined in" hardcoded string. </br>
 
@@ -212,7 +211,7 @@ Here we would like to translate "Defined in" hardcoded string. </br>
     The structure of the file should be like this:
     ```json
     {
-        localize-key: {
+        "localize-key": {
             "string": "translation"
         }
     }
@@ -241,13 +240,13 @@ Here we would like to translate "Defined in" hardcoded string. </br>
         </ul>
     ```
 
-3. Execute the translation command which would contain the `localization key` and the `path` to the `template strings` file. </br>
+3. Execute the translation command, providing the localization key and the path to the template strings file, as seen below.</br>
     For instance:
-    ```
-    npx typedoc `<main-proj-dir>` --localize `<localization-key>` --templateStrings <path/to/the/file>`
+    ```bash
+    $ npx typedoc $main_project_directory --localize $localization_key --templateStrings $path_to_localization_file
     ```
     In case of [igniteui-angular](https://github.com/IgniteUI/igniteui-angular) it would be:
+    ```bash
+    $ npx typedoc projects\igniteui-angular\src\ --localize jp --templateStrings ./extras/template/strings/shell-strings.json
     ```
-    npx typedoc projects\igniteui-angular\src\ --localize jp --templateStrings ./extras/template/strings/shell-strings.json
-    ```
-    You can see how our template strings file looks like here [./extras/template/strings/shell-strings.json](https://github.com/IgniteUI/igniteui-angular/blob/master/extras/template/strings/shell-strings.json).
+    You can see how our template strings file looks like here: [./extras/template/strings/shell-strings.json](https://github.com/IgniteUI/igniteui-angular/blob/master/extras/template/strings/shell-strings.json).
